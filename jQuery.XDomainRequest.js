@@ -19,6 +19,8 @@ if (!jQuery.support.cors && window.XDomainRequest) {
           xdr = new XDomainRequest();
           if (/^\d+$/.test(userOptions.timeout)) {
             xdr.timeout = userOptions.timeout;
+          }else{
+            xdr.timeout = Number.MAX_VALUE;
           }
           xdr.ontimeout = function(){
             complete(500, 'timeout');
@@ -74,7 +76,9 @@ if (!jQuery.support.cors && window.XDomainRequest) {
           };
           var postData = (userOptions.data && $.param(userOptions.data)) || '';
           xdr.open(options.type, options.url);
-          xdr.send(postData);
+          setTimeout(function(){
+            xdr.send(postData);
+          },0);
         },
         abort: function(){
           if (xdr) {
